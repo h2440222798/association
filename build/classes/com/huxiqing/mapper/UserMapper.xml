@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间包名+类名的方式 -->
+<mapper namespace="com.huxiqing.dao.IUserDao">
+	<!-- resultMap 建立映射关系 type 对应的实体类的全路径 包名＋类名 id 针对映射关系的唯一值 -->
+	<resultMap type="user" id="userMapper">
+	
+		<id property="id" column="id" />
+		<!-- 非主键 -->
+		<result property="userName" column="username" />
+		<result property="password" column="password" />
+		<result property="email" column="email" />
+		<result property="isLock" column="islock" />
+		<result property="regDate" column="regdate" />
+	</resultMap>
+	<select id="findAlluser" resultMap="userMapper">
+		select * from user
+	</select>
+	<select id="findInfo" parameterType="user" resultMap="userMapper">
+		select * from user where username=#{userName} and password = #{password}
+	</select>
+	<select id="findUser" parameterType="user" resultMap="userMapper">
+		select * from user where username=#{userName} 
+	</select>
+	<select id="findById" parameterType="int" resultMap="userMapper">
+		select * from user where id=#{id} 
+	</select>
+	<update id="updateLock" parameterType="user">
+		update user set islock=#{isLock} where username=#{userName}
+	</update>
+	<update id="updateLock2" parameterType="int">
+		update user set islock=0 where id=#{id}
+	</update>
+	<insert id="insertUser" parameterType="user">
+			insert into user(username,password,email,regdate,islock)
+		values(#{userName} ,#{password},#{email},#{regDate},#{isLock})
+	</insert>
+	<delete id="deleteByName" parameterType="String">
+		delete from user where username=#{userName}
+	</delete>
+	<update id="updateUser" parameterType="user">
+		update user set username=#{userName},password=#{password},email = #{email} WHERE id=#{id}
+	</update>
+	
+</mapper>

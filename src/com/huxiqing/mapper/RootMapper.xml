@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间包名+类名的方式 -->
+<mapper namespace="com.huxiqing.dao.IRootDao">
+	<!-- resultMap 建立映射关系 type 对应的实体类的全路径 包名＋类名 id 针对映射关系的唯一值 -->
+	<resultMap type="root" id="rootMapper">
+	
+		<id property="id" column="id" />
+		<!-- 非主键 -->
+		<result property="rootName" column="rootname" />
+		<result property="password" column="password" />
+	</resultMap>
+	
+	<select id="findRoot" parameterType="root" resultMap="rootMapper">
+		select * from root where rootname=#{rootName} and password = #{password}
+	</select>
+	
+</mapper>

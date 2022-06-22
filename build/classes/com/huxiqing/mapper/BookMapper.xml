@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间包名+类名的方式 -->
+<mapper namespace="com.huxiqing.dao.IBookDao">
+	<!-- resultMap 建立映射关系 type 对应的实体类的全路径 包名＋类名 id 针对映射关系的唯一值 -->
+	<resultMap type="book" id="bookMapper">
+	
+		<id property="id" column="id" />
+		<!-- 非主键 -->
+		<result property="bookName" column="bookname" />
+		<result property="price" column="price" />
+		<result property="url" column="url" />
+		<result property="num" column="num" />
+	</resultMap>
+	
+	<select id="findInfo" parameterType="book" resultMap="bookMapper">
+		select * from book where bookname=#{bookName}
+	</select>
+	
+	<select id="findAll"  resultMap="bookMapper">
+		select * from book where isdelete=0
+	</select>
+	<update id="deleteBookById" parameterType="int">
+		update book set isdelete=1 where id=#{id}
+	</update>
+	<select id="findById" parameterType="int" resultMap="bookMapper">
+		select * from book where id=#{id} 
+	</select>
+	<select id="findByName" parameterType="String" resultMap="bookMapper">
+		select * from book where bookname=#{bookName} 
+	</select>
+	<update id="updateBook" parameterType="book">
+		update book set bookname=#{bookName},price=#{price},num = #{num} WHERE id=#{id}
+	</update>
+	<insert id="insertOne" parameterType="book">
+			insert into book(bookname,price,url,num,isdelete) values(#{bookName},#{price},#{url},#{num},0)
+	</insert>
+<!-- 	<select id="findUser" parameterType="user" resultMap="userMapper"> -->
+<!-- 		select * from user where username=#{userName}  -->
+<!-- 	</select> -->
+<!-- 	<update id="updateLock" parameterType="user"> -->
+<!-- 		update user set islock=#{isLock} where username=#{userName} -->
+<!-- 	</update> -->
+<!-- 	<insert id="insertUser" parameterType="user"> -->
+<!-- 			insert into user(username,password,email,regdate,islock) -->
+<!-- 		values(#{userName} ,#{password},#{email},#{regDate},#{isLock}) -->
+<!-- 	</insert> -->
+	
+</mapper>

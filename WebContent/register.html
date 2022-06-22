@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>注册页面</title>
+<link type="text/css" rel="stylesheet" href="css/style.css" />
+<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+<div id="header" class="wrap">
+	<div id="logo">网上书城</div>
+	<div id="navbar">
+		<form method="get" name="search" action="">
+			搜索：<input class="input-text" type="text" name="keywords" /><input class="input-btn" type="submit" name="submit" value="" />
+		</form>
+	</div>
+</div>
+<div id="register">
+	<div class="title">
+		<h2>欢迎注册</h2>
+	</div>
+	<div class="steps">
+		<ul class="clearfix">
+			<li class="current">1.填写注册信息</li>
+			<li class="unpass">2.注册成功</li>
+		</ul>
+	</div>
+<form id = "registerform" method="post" action="" onsubmit="return false;">
+		<dl>
+			<dt>用 户 名：</dt>
+			<dd><input id="user" class="input-text" type="text" name="userName" onkeyup="user1()"/><span id="span1">请输入首字符是字母的性名</span></dd>
+			<dt>密　　码：</dt>
+			<dd><input id="password" class="input-text" type="password" name="passWord" onkeyup="password1()"/><span id="span2">请输入密码6~15位！</span></dd>
+			<dd> 密码强度：<span id="span5">弱，可能是位数不够或者只有字母或数字</span></dd>
+			<dt>确认密码：</dt>
+			<dd><input id="repassword" class="input-text" type="password" name="rePassWord" onkeyup="repassword1()"/><span id="span3">两次密码输入不一致！</span></dd>
+			<dt>Email地址：</dt>
+			<dd><input id="emailid" class="input-text" type="email" name="email" /><span id="span4">输入邮箱地址！</span></dd>
+			<dt></dt>
+			<dd class="button"><input class="input-reg" type="submit" name="register" value="" /></dd>
+		</dl>
+	</form>
+</div>
+
+<div id="footer" class="wrap">
+	软件工程16-1胡西庆  &copy; 版权所有
+</div>
+
+<script type="text/javascript">
+             function password1(){ 
+            	 var x=$("#password").val();
+            
+           	   if(x.length == 0)
+           	   {
+           		   $("#span2").html("请输入密码6~15位！");	
+           	   }
+           	   else 
+           	    {
+           	    	if(x.length < 6 && x.length>0)
+               		{
+               			$("#span2").html("密码过短！");
+               		}
+               		else if(x.length > 15)
+               		{
+               		 	$("#span2").html("密码过长！");	
+               		}
+               		else{
+               			$("#span2").html("可以注册！");	
+               		}
+           	    }
+           	//$("#span5").html("可能只包含字母或者数字");	
+           	var p1 = /[0-9]/; 
+           	var b1 = p1.test(x);
+           	var p2 = /[a-z]/i; 
+           	var b2 = p2.test(x);
+           	if(b1==true && b2==true && x.length>=6)
+           	{
+           		$("#span5").html("强，位数够了而且包含字母和数字");	
+           	}
+           	else if(x.length>=6)
+           	{
+           		$("#span5").html("中，位数够了但是可能只包含字母或者数字");	
+           	}
+           	else
+           	{
+           		$("#span5").html("弱，位数不够并且可能只包含字母或者数字");			
+           	}
+           	
+             }
+</script>
+<script type="text/javascript">
+             function repassword1(){ 
+            	 var x=$("#repassword").val();
+                 var y=$("#password").val();
+           	   if(x == y)
+           	   {
+           		   $("#span3").html("两次密码输入一致！");	
+           	   }
+           	   else 
+           	    {
+           		  $("#span3").html("两次密码输入不一致！");
+           	    }
+    
+}
+</script>
+<script type="text/javascript">
+
+             function user1(){
+            	   var x=$("#user").val();
+            	   if(x.length == 0)
+            	   {
+            		   $("#span1").html("请输入首字符是字母的性名");	
+            	   }
+            	   else if((x.charAt(0) >= 'A' && x.charAt(0) <= 'Z')||(x.charAt(0) >= 'a' && x.charAt(0) <= 'z') )
+            	    {
+            	    	if(x.length < 6 && x.length>0)
+                		{
+                			$("#span1").html("用户名过短！");
+                		}
+                		else if(x.length > 15)
+                		{
+                		 	$("#span1").html("用户名过长！");	
+                		}
+                		else{
+                			$("#span1").html("可以注册！");	
+                		}
+            	    }
+            	    else
+            	    {
+            	    	$("#span1").html("用户名首字符必须为字母！");
+            	    }
+             }
+</script>
+<script type="text/javascript">
+  $("#registerform").submit(function(){
+		var user = $("#span1").html();
+		var password = $("#span2").html();
+		var repassword = $("#span3").html();
+		var ems = $("#emailid").val();
+		if(user == "可以注册！" && password == "可以注册！" && repassword == "两次密码输入一致！" && ems.length!=0)
+		{
+			//alert("去注册");
+			$.ajax({
+				type:"post",
+				url:"register",
+				data:$("#registerform").serialize(),
+				dataType:"json",
+				success:function(data){
+					if(data.code == 1){
+						window.location.href = "register_success.html";
+					}else{
+						alert(data.msg);
+					}
+				}
+			})	
+		}
+		else
+		{
+			alert("输入信息有误！")	
+		}
+	});
+</script>
+  
+</body>
+</html>

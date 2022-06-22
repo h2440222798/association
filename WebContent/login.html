@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>用户登录</title>
+<link type="text/css" rel="stylesheet" href="css/style.css" />
+<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+
+</head>
+<body>
+<div id="header" class="wrap">
+	<div id="logo">网上书城</div>
+	<div id="navbar">
+		<form method="post" name="search" action="">
+			搜索：<input class="input-text" type="text" name="keywords" /><input class="input-btn" type="submit" name="submit" value="" />
+		</form>
+	</div>
+</div>
+<div id="login">
+	<h2>用户登陆</h2>
+	
+	<form id = "loginform" method="post" action="" onsubmit="return false;">
+		<dl>
+		    <dt>管理员：</dt>
+		    <dd class="button"><input class="input-btn" type="button" name="rootlogin" value="" onclick="window.location='rootlogin.jsp';" /></dd>
+			<dt>用户名：</dt>
+			<dd><input id="userId" class="input-text" type="text" name="userName" /><span id="userTip">请输入用户名</span></dd>
+			<dt>密　码：</dt>
+			<dd><input class="input-text" type="password" name="passWord" /><span>请输入密码</span></dd>
+			<dt></dt>
+			<dd class="button"><input class="input-btn" type="submit" name="submit" value="" /><input class="input-reg" type="button" name="register" value="" onclick="window.location='register.html';" /></dd>
+		</dl>
+	</form>
+</div>
+<div id="footer" class="wrap">
+		软件工程16-1胡西庆  &copy; 版权所有
+</div>
+<script type="text/javascript">
+    //jquery
+	$("#loginform").submit(function(){
+		
+		var name = $("#userId").val();
+		//alert(name);
+		if(name == null || name.length==0){
+			//alert(name);
+			$("#userTip").html("必须输入用户名");
+			return;
+		}
+		
+		
+		$.ajax({
+			type:"post",
+			url:"login",
+			data:$("#loginform").serialize(),
+			dataType:"json",
+			success:function(data){
+				if(data.code == 1){
+					window.location.href = "index.jsp";
+				}else{
+					alert(data.msg);
+					$("#userTip").html("请输入用户名");
+				}
+			}
+		})
+	})
+</script>
+</body>
+</html>
